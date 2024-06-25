@@ -1,0 +1,44 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+.container{
+  margin: -50px;
+  .form{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 10px auto;
+    input{
+      padding: 10px;
+      margin: 10px;
+    }
+    button{
+      background-color: #663e3e;
+    }
+    button:hover{
+      background-color: #167779;
+    }
+  }
+  .search{
+    margin: 5px auto;
+    input{
+      padding: 5px 200px;
+    }
+  }
+  table{
+    width: 90%;
+    margin: 10px auto;
+    tr{
+      th{
+        border: 1px solid black;
+      }
+      td{
+        border: 1px solid black;
+       
+      }
+    }
+  }
+}
