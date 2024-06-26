@@ -1,26 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react';
+import { Book } from '../types/alltypes';
 
-export default function Uselocalstorage() {
+function UseLocalStorage(key:string, initialValue:Book[]) {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(error);
+      return initialValue;
+    }
+  });
 
-    const [books, setBooks] = useState(()=>{
+  const setValue = (value:string) => {
+    try {
+      setStoredValue(value);
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        try{
-            const booking = localStorage.getItem('books');
-            if(booking != null) {
-                return JSON.parse(booking)
-            }
-
-        } catch(error) {
-            (error)
-        }
-
-
-    })
-
-    useEffect(()=>{
-        localStorage.setItem('books', JSON.stringify(books))
-    },[books])
-
-    return[books, setBooks]
-
+  return [storedValue, setValue];
 }
+
+export default UseLocalStorage;

@@ -10,9 +10,8 @@ function App() {
   const [booksPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingBook, setEditingBook] = useState<Book | null>(null);
-  const [storedBooks, setStoredBooks] = Uselocalstorage();
+  const [storedBooks, setStoredBooks] = Uselocalstorage('books', books);
 
-  const idInputRef = useRef<HTMLInputElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
   const authorInputRef = useRef<HTMLInputElement>(null);
   const yearInputRef = useRef<HTMLInputElement>(null);
@@ -22,10 +21,7 @@ function App() {
   }, [books, setStoredBooks]);
 
   useEffect(() => {
-    // storedBooks.forEach
-    // (book => {
-    //   dispatch({ type: 'ADD_BOOK', payload: book });
-    // });
+    
   }, [editingBook]);
 
   const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -38,9 +34,10 @@ function App() {
     setCurrentPage(pageNumber);
   }, []);
 
-  const handleAddBook = (e: React.FocusEvent) => {
-    e.preventDefault();
-    if (idInputRef.current && titleInputRef.current && authorInputRef.current && yearInputRef.current) {
+  const handleAddBook = () => {
+    console.log('handle')
+
+    if ( titleInputRef.current && authorInputRef.current && yearInputRef.current) {
       const newBook: Book = {
         id: Date.now().toString(),
         title: titleInputRef.current.value,
@@ -51,6 +48,9 @@ function App() {
       titleInputRef.current.value = '';
       authorInputRef.current.value = '';
       yearInputRef.current.value = '';
+    }else
+    {
+      return false;
     }
   };
 
@@ -77,7 +77,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Book Repository</h1>
+      <h1>Books</h1>
       <div className="form">
         <input type="text" placeholder="Title" ref={titleInputRef} />
         <input type="text" placeholder="Author" ref={authorInputRef} />
@@ -85,7 +85,7 @@ function App() {
         {editingBook ? (
           <button onClick={handleUpdateBook}>Update Book</button>
         ) : (
-          <button onClick={()=>(handleAddBook)}>Add Book</button>
+          <button onClick={handleAddBook}>Add Book</button>
         )}
       </div>
       <div className="search">
@@ -101,8 +101,8 @@ function App() {
           <tr>
             <th>Title</th>
             <th>Author</th>
-            <th>Year</th>
-            <th>Actions</th>
+            <th>Publish</th>
+            <th>Privileges</th>
           </tr>
         </thead>
         <tbody>
@@ -119,7 +119,7 @@ function App() {
           ))}
         </tbody>
       </table>
-      <div className="pagination">
+      <div className="nextpage">
         <button
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}

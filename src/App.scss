@@ -40,5 +40,14 @@
        
       }
     }
+    button{
+      background-color: #42148b;
+      opacity: 0.5;
+      margin: 5px;
+    }
+    button:hover{
+      background-color: #0fbcbc;
+      opacity: 1;
+    }
   }
 }
