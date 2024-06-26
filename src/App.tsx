@@ -38,7 +38,7 @@ function App() {
     setCurrentPage(pageNumber);
   }, []);
 
-  const handleAddBook = (e) => {
+  const handleAddBook = (e: any) => {
     e.preventDefault();
     if (idInputRef.current && titleInputRef.current && authorInputRef.current && yearInputRef.current) {
       const newBook: Book = {
