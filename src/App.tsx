@@ -85,7 +85,7 @@ function App() {
         {editingBook ? (
           <button onClick={handleUpdateBook}>Update Book</button>
         ) : (
-          <button onChange={()=>(handleAddBook)}>Add Book</button>
+          <button onClick={()=>(handleAddBook)}>Add Book</button>
         )}
       </div>
       <div className="search">

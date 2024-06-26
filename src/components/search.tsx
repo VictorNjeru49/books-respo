@@ -1,22 +1,29 @@
-import  { useState } from 'react';
-import '../App.scss'
+import React, { useState } from 'react';
+import '../App.scss';
 
-const Searchbooks =()=>{
-    const [search, setbooks] = useState('')
+const Searchbooks = () => {
+  const [searchQuery, setSearchQuery] = useState('');
 
-    const handlesearch=(e)=>{
-        e.preventDefault();
-        setbooks(e.target.value)
-    }  
-    return(
-        <>
-        <div className='searchbtn'>
-        <form action="" onClick={()=>(handlesearch)}>
-            <input type="text" placeholder="Search Books" value={search}/>
-            <button type="submit">Search</button>
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Search query:', searchQuery);
+  };
+
+  return (
+    <>
+      <div className="searchbtn">
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search Books"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit">Search</button>
         </form>
-        </div>
-        </>
-    )
-}
-export default Searchbooks
+      </div>
+    </>
+  );
+};
+
+export default Searchbooks;
