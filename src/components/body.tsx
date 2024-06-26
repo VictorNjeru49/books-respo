@@ -1,9 +1,7 @@
-import { useReducer } from 'react'
-import '../App.scss'
-import { Initialstate, Reducer } from './reducers/reducer'
 
+import '../App.scss'
 const Findbooks=()=>{
-    count [count , setCount] = useReducer(Reducer, Initialstate)
+
     
     return(
         <>

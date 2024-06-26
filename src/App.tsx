@@ -1,35 +1,31 @@
-
-import React, {useState,useEffect,useCallback, useReducer, useRef } from 'react';
-import './App.scss'
+import { useEffect, useState, useCallback, useReducer, useRef } from 'react';
+import './App.scss';
 import Uselocalstorage from './components/uselocalstorage';
-import Reducerer,{Intialbooks} from './components/reducers/reducer';
-import { Book } from './types/alltypes';
-
+import Reducerer, { Intialbooks } from './components/reducers/reducer';
+import { Book} from './types/alltypes';
 
 function App() {
   const [books, dispatch] = useReducer(Reducerer, Intialbooks);
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const [editingBook, setEditingBook] = useState(null);
-  const [storedBooks, setStoredBooks] = Uselocalstorage('books', books);
+  const [editingBook, setEditingBook] = useState<Book | null>(null);
+  const [storedBooks, setStoredBooks] = Uselocalstorage();
 
-  const idInputRef = useRef(null);
-  const titleInputRef = useRef(null);
-  const authorInputRef = useRef(null);
-  const yearInputRef = useRef(null);
+  const idInputRef = useRef<HTMLInputElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  const authorInputRef = useRef<HTMLInputElement>(null);
+  const yearInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setStoredBooks(books);
   }, [books, setStoredBooks]);
 
   useEffect(() => {
-    if (editingBook) {
-      idInputRef.current.value = editingBook.id;
-      titleInputRef.current.value = editingBook.title;
-      authorInputRef.current.value = editingBook.author;
-      yearInputRef.current.value = editingBook.year;
-    }
+    // storedBooks.forEach
+    // (book => {
+    //   dispatch({ type: 'ADD_BOOK', payload: book });
+    // });
   }, [editingBook]);
 
   const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -38,40 +34,44 @@ function App() {
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
-  const handlePageChange = useCallback(pageNumber => {
+  const handlePageChange = useCallback((pageNumber: number) => {
     setCurrentPage(pageNumber);
   }, []);
 
   const handleAddBook = (e) => {
     e.preventDefault();
-    const newBook = {
-      id: Date.now().toString(),
-      title: titleInputRef.current.value,
-      author: authorInputRef.current.value,
-      year: parseInt(yearInputRef.current.value)
-    };
-    dispatch({ type: 'ADD_BOOK', payload: newBook });
-    titleInputRef.current.value = '';
-    authorInputRef.current.value = '';
-    yearInputRef.current.value = '';
+    if (idInputRef.current && titleInputRef.current && authorInputRef.current && yearInputRef.current) {
+      const newBook: Book = {
+        id: Date.now().toString(),
+        title: titleInputRef.current.value,
+        author: authorInputRef.current.value,
+        year: parseInt(yearInputRef.current.value)
+      };
+      dispatch({ type: 'ADD_BOOK', payload: newBook });
+      titleInputRef.current.value = '';
+      authorInputRef.current.value = '';
+      yearInputRef.current.value = '';
+    }
   };
 
-  const handleEditBook = (book) => {
+  const handleEditBook = (book: Book) => {
     setEditingBook(book);
   };
 
   const handleUpdateBook = () => {
-    const updatedBook = {
-      id: editingBook.id,
-      title: titleInputRef.current.value,
-      author: authorInputRef.current.value,
-      year: parseInt(yearInputRef.current.value)
-    };
-    dispatch({ type: 'UPDATE_BOOK', payload: updatedBook });
-    setEditingBook(null);
+    if (editingBook && titleInputRef.current && authorInputRef.current && yearInputRef.current) {
+      const updatedBook: Book = {
+        id: editingBook.id,
+        title: titleInputRef.current.value,
+        author: authorInputRef.current.value,
+        year: parseInt(yearInputRef.current.value)
+      };
+      dispatch({ type: 'UPDATE_BOOK', payload: updatedBook });
+      setEditingBook(null);
+    }
   };
 
-  const handleDeleteBook = (bookId) => {
+  const handleDeleteBook = (bookId: string) => {
     dispatch({ type: 'DELETE_BOOK', payload: bookId });
   };
 
@@ -85,7 +85,7 @@ function App() {
         {editingBook ? (
           <button onClick={handleUpdateBook}>Update Book</button>
         ) : (
-          <button onClick={handleAddBook}>Add Book</button>
+          <button onChange={handleAddBook}>Add Book</button>
         )}
       </div>
       <div className="search">
@@ -106,13 +106,13 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {currentBooks.map((book:Book) => (
+          {currentBooks.map((book: Book) => (
             <tr key={book.id}>
               <td>{book.title}</td>
               <td>{book.author}</td>
               <td>{book.year}</td>
               <td>
-                <button onClick={() => handleEditBook(book)}>Edit</button>
+                <button value={storedBooks} onClick={() => handleEditBook(book)}>Edit</button>
                 <button onClick={() => handleDeleteBook(book.id)}>Delete</button>
               </td>
             </tr>
@@ -140,4 +140,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

@@ -4,7 +4,7 @@ import '../App.scss'
 const Searchbooks =()=>{
     const [search, setbooks] = useState('')
 
-    const handlesearch=(e:any)=>{
+    const handlesearch=(e)=>{
         e.preventDefault();
         setbooks(e.target.value)
     }  
