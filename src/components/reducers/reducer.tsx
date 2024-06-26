@@ -1,24 +1,41 @@
-import { Action, Book } from "../../types/alltypes";
+import { Book, State } from "../../types/alltypes";
+import generateId from "../../utils/genrateid";
+export type Action =
+  | { type: 'ADD_BOOK'; payload: Omit<Book, 'id'> }
+  | { type: 'UPDATE_BOOK'; payload: Book }
+  | { type: 'DELETE_BOOK'; payload: string }
+  | { type: 'SET_PAGE'; payload: number }
+  | { type: 'SET_SEARCH_TERM'; payload: string }
+  | { type: 'SET_BOOKS'; payload: Book[] }
+  | { type: 'SET_EDITING_BOOK'; payload:Book};
 
-export const Intialbooks:Book[] = [
-  { id: 'BN303', title: 'Romeo and Juliet', author: 'William Shakespeare', year: 1934 },
-  { id: 'NT202', title: 'Timeline', author: 'Michael Crichton', year: 2001 },
-  { id: 'BN304', title: '1984', author: 'George Orwell', year: 1949 },
-  { id: 'BN305', title: 'Moby Dick', author: 'Herman Melville', year: 1851 },
-  { id: 'BN306', title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', year: 1925 }
-];
+export const InitialState: State = {
+  books: [],
+  currentPage: 1,
+  booksPerPage: 5,
+  searchTerm: '',
+ 
+};
 
-function Reducerer(state:Book[], action:Action) {
+const Reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'ADD_BOOK':
-      return [...state, action.payload];
+      return { ...state, books: [...state.books, { ...action.payload, id: generateId() }] };
     case 'UPDATE_BOOK':
-      return state.map(book => book.id === action.payload.id ? action.payload : book);
+      return {
+        ...state,
+        books: state.books.map((book) => (book.id === action.payload.id ? action.payload : book)),
+      };
     case 'DELETE_BOOK':
-      return state.filter(book => book.id !== action.payload);
+      return { ...state, books: state.books.filter((book) => book.id !== action.payload) };
+    case 'SET_PAGE':
+      return { ...state, currentPage: action.payload };
+    case 'SET_SEARCH_TERM':
+      return { ...state, searchTerm: action.payload };
+    case 'SET_BOOKS':
+      return { ...state, books: action.payload };
     default:
       return state;
   }
-}
-
-export default Reducerer;
+};
+export default Reducer;

@@ -7,14 +7,7 @@ export interface Book {
 
 export interface State {
   books: Book[];
-  searchQuery: string;
   currentPage: number;
   booksPerPage: number;
+  searchTerm: string;
 }
-
-export type Action =
-  { type: 'ADD_BOOK', payload: Book } |
-  { type: 'UPDATE_BOOK', payload: Book } |
-  { type: 'DELETE_BOOK', payload: string } |
-  { type: 'SET_BOOK', payload: Book } |
-  { type: 'SEARCH_BOOK', payload: string };

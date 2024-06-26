@@ -24,9 +24,9 @@
   }
   .search{
     margin: 5px auto;
-    input{
-      padding: 5px 200px;
-    }
+    width: 40%;
+    padding: 10px 0;
+    text-align: center;
   }
   table{
     width: 90%;
@@ -49,5 +49,21 @@
       background-color: #0fbcbc;
       opacity: 1;
     }
+  }
+}
+form{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 10px auto;
+  input{
+    padding: 10px;
+    margin: 10px;
+  }
+  button{
+    background-color: #663e3e;
+  }
+  button:hover{
+    background-color: #167779;
   }
 }
