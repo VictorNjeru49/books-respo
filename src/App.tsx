@@ -38,7 +38,7 @@ function App() {
     setCurrentPage(pageNumber);
   }, []);
 
-  const handleAddBook = (e: any) => {
+  const handleAddBook = (e: React.FocusEvent) => {
     e.preventDefault();
     if (idInputRef.current && titleInputRef.current && authorInputRef.current && yearInputRef.current) {
       const newBook: Book = {
@@ -85,7 +85,7 @@ function App() {
         {editingBook ? (
           <button onClick={handleUpdateBook}>Update Book</button>
         ) : (
-          <button onChange={handleAddBook}>Add Book</button>
+          <button onChange={()=>(handleAddBook)}>Add Book</button>
         )}
       </div>
       <div className="search">
